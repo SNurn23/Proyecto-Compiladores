@@ -1,12 +1,12 @@
 package lexer;
 
 public class Token {
-    private TokenType type;
-    private String value;
+    private final TokenType type;
+    private final String value;
 
-    public Token(TokenType Type, String match) {
-        this.type = Type;
-        this.value = match;
+    public Token(TokenType type, String value) {
+        this.type = type;
+        this.value = value;
     }
 
     public TokenType getType() {

@@ -11,11 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LexerTest {
+
+    public List<Token> tokenTest(String input) throws Exception {
+        Lexer lexer = new Lexer(input);
+        return lexer.tokenize();
+    }
+
     @Test
     public void testFuncion() throws Exception {
         String input = "int main() { int sum = 0; for (int i = 0; i < 5; i++) { sum += i; } return sum; }";
-        Lexer lexer = new Lexer(input);
-        List<Token> tokens = lexer.tokenize();
+        List<Token> resultTokens = tokenTest(input);
 
         List<Token> expectedTokens = Arrays.asList(
                 new Token(TokenType.KEYWORD, "int"),
@@ -54,14 +59,13 @@ public class LexerTest {
                 new Token(TokenType.SYMBOL, "}"),
                 new Token(TokenType.EOF, "")
         );
-        assertTokenListsEqual(expectedTokens, tokens);
+        assertTokenListsEqual(expectedTokens, resultTokens);
     }
 
     @Test
     public void testMultiplesOperadores() throws Exception {
         String input = "a += b; c == d;";
-        Lexer lexer = new Lexer(input);
-        List<Token> tokens = lexer.tokenize();
+        List<Token> resultTokens = tokenTest(input);
 
         List<Token> expectedTokens = Arrays.asList(
                 new Token(TokenType.IDENTIFIER, "a"),
@@ -75,7 +79,7 @@ public class LexerTest {
                 new Token(TokenType.EOF, "")
         );
 
-        assertTokenListsEqual(expectedTokens, tokens);
+        assertTokenListsEqual(expectedTokens, resultTokens);
     }
 
     @Test
@@ -90,8 +94,7 @@ public class LexerTest {
     @Test
     public void testComentarioLinea() throws Exception {
         String input = "// Este es un comentario\nint x = 10;";
-        Lexer lexer = new Lexer(input);
-        List<Token> tokens = lexer.tokenize();
+        List<Token> resultTokens = tokenTest(input);
 
         List<Token> expectedTokens = Arrays.asList(
                 new Token(TokenType.KEYWORD, "int"),
@@ -102,14 +105,13 @@ public class LexerTest {
                 new Token(TokenType.EOF, "")
         );
 
-        assertTokenListsEqual(expectedTokens, tokens);
+        assertTokenListsEqual(expectedTokens, resultTokens);
     }
 
     @Test
     public void testEspaciosEnBlanco() throws Exception {
         String input = "int    a   =  5;  ";
-        Lexer lexer = new Lexer(input);
-        List<Token> tokens = lexer.tokenize();
+        List<Token> resultTokens = tokenTest(input);
 
         List<Token> expectedTokens = Arrays.asList(
                 new Token(TokenType.KEYWORD, "int"),
@@ -120,7 +122,7 @@ public class LexerTest {
                 new Token(TokenType.EOF, "")
         );
 
-        assertTokenListsEqual(expectedTokens, tokens);
+        assertTokenListsEqual(expectedTokens, resultTokens);
     }
 
     private void assertTokenListsEqual(List<Token> expectedTokens, List<Token> actualTokens) {

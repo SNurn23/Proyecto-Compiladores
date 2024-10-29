@@ -5,24 +5,23 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-///  Implementa el analizador léxico, que convierte el código fuente en una lista de tokens.
 
 public class Lexer {
-    private String input;
-    private List<Token> tokens;
+    private final String input;
+    private final List<Token> tokens;
 
     // Expresiones regulares para los diferentes tipos de tokens
     private static final String KEYWORD_PATTERN = "\\b(if|else|while|for|int|char|return|void)\\b";
     private static final String IDENTIFIER_PATTERN = "\\b[a-zA-Z_][a-zA-Z_0-9]*\\b";
     private static final String INT_LIT_PATTERN = "\\b[0-9]+\\b";
     private static final String CHAR_LIT_PATTERN = "'(\\\\.|[^\\\\'])'";
-    private static final String STRING_LIT_PATTERN = "\"(\\\\.|[^\\\\\"])*\""; // Soporte para cadenas
+    private static final String STRING_LIT_PATTERN = "\"(\\\\.|[^\\\\\"])*\"";
     private static final String OPERATOR_PATTERN = "[+\\-*/=!><&|]{1,2}";
     private static final String SYMBOL_PATTERN = "[(){};,]";
     private static final String WHITESPACE_PATTERN = "\\s+";
     private static final String COMMENT_PATTERN = "(//.*?$|/\\*.*?\\*/)";
 
-    // Definir los patrones que vamos a buscar en el input, incluyendo cadenas y comentarios
+    // Patrones que vamos a buscar en el input
     private static final Pattern TOKEN_PATTERNS = Pattern.compile(
             String.join("|", COMMENT_PATTERN, KEYWORD_PATTERN, IDENTIFIER_PATTERN,
                     INT_LIT_PATTERN, CHAR_LIT_PATTERN, STRING_LIT_PATTERN,
@@ -37,7 +36,7 @@ public class Lexer {
 
     public List<Token> tokenize() throws Exception {
         Matcher matcher = TOKEN_PATTERNS.matcher(input);
-        int lastMatchEnd = 0; //Rastrear errores léxicos
+        int lastMatchEnd = 0; //Ver errores léxicos
 
         while (matcher.find()) {
             String match = matcher.group();
@@ -53,6 +52,7 @@ public class Lexer {
                 continue;
             }
 
+            //Ignorar los espacios en blancos
             if (match.matches(WHITESPACE_PATTERN)) {
                 continue;
             }
